@@ -1,0 +1,22 @@
+service: boilerplate
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  region: eu-central-1
+
+plugins:
+  - serverless-webpack
+
+custom:
+  webpack: ./foundation/webpack/serverless.js
+
+functions:
+  bazinga:
+    handler: src/microservices/test/handler.debug
+    timeout: 1
+    memory: 128
+    events:
+      - http:
+          path: bazinga
+          method: GET

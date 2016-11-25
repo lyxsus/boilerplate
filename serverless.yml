@@ -7,16 +7,82 @@ provider:
 
 plugins:
   - serverless-webpack
+  - serverless-client-s3
 
 custom:
   webpack: ./foundation/webpack/serverless.js
+  assetsBucketName: boilerplate-dev-assets
+  client:
+    bucketName: ${self:custom.assetsBucketName} 
 
 functions:
-  bazinga:
-    handler: src/microservices/test/handler.debug
+  graphql:
+    handler: src/microservices/functions.graphql
     timeout: 1
-    memory: 128
+    memorySize: 128
     events:
       - http:
-          path: bazinga
-          method: GET
+          path: graphql
+          method: post
+  
+  test:
+    handler: src/microservices/functions.debug
+    timeout: 1
+    memorySize: 128
+    events:
+      - http:
+          path: test
+          method: get
+
+resources:
+  Resources:
+    AssetsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.assetsBucketName}
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: error.html
+    
+    AssetsCdn:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+            - DomainName:
+                Fn::GetAtt:
+                  - AssetsBucket
+                  - DomainName
+              Id: AssetsOrigin
+              S3OriginConfig:
+                OriginAccessIdentity: ""
+            - DomainName:
+                Fn::Join:
+                  - ""
+                  - - Ref: "ApiGatewayRestApi"
+                    - ".execute-api.eu-central-1.amazonaws.com"
+              Id: ApiGatewayOrigin
+              CustomOriginConfig:
+                OriginProtocolPolicy: "https-only"
+          Enabled: true
+
+          CacheBehaviors:
+            - PathPattern: assets/*
+              TargetOriginId: AssetsOrigin
+              ForwardedValues:
+                QueryString: false
+              ViewerProtocolPolicy: "redirect-to-https"
+
+          DefaultCacheBehavior:
+            ForwardedValues:
+              QueryString: true
+            TargetOriginId: ApiGatewayOrigin
+            ViewerProtocolPolicy: "redirect-to-https"
+          DefaultRootObject: "dev/test"
+
+  Outputs:
+    AssetsBucket:
+      Value:
+        Ref: AssetsBucket
+

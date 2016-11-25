@@ -313,6 +313,7 @@
 		"react/jsx-uses-vars": "error",
 		"require-yield": "off",
 		"import/no-unresolved": "off",
-		"func-style": "off"
+		"func-style": "off",
+		"no-plusplus": "off"
 	}
 }

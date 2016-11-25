@@ -13,7 +13,7 @@
   "dependencies": {
     "aws-sdk": "^2.6.7",
     "bluebird": "^3.4.6",
-    "graphql": "^0.7.1",
+    "graphql": "^0.7.2",
     "isomorphic-relay": "^0.7.3",
     "isomorphic-relay-router": "^0.8.4",
     "react": "^15.3.2",
@@ -43,7 +43,7 @@
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-react": "^6.3.0",
     "react-hot-loader": "^3.0.0-beta.5",
-    "serverless-client-s3": "^2.0.0",
+    "serverless-client-s3": "git+https://github.com/kevzettler/serverless-client-s3.git/#serverless_1.0_beta_compatibility",
     "serverless-eslint-plugin": "^0.1.4",
     "serverless-offline": "git+https://github.com/dherault/serverless-offline.git/#serverless_v1",
     "serverless-optimizer-plugin": "^2.5.1",

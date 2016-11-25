@@ -12,7 +12,7 @@ export default {
 	target: 'web',
 
 	output: {
-		path: './dist',
+		path: path.resolve (__dirname, 'dist'),
 		filename: 'bundle.js',
 		publicPath: '/static/'
 	},
@@ -20,7 +20,7 @@ export default {
 	devtool: 'source-map',
 
 	plugins: [
-		new Webpack.HotModuleReplacementPlugin,
+		new Webpack.HotModuleReplacementPlugin
 		// new Webpack.optimize.DedupePlugin,
 		// new Webpack.optimize.OccurenceOrderPlugin
 	],

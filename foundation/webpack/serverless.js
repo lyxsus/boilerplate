@@ -1,25 +1,18 @@
 const Webpack = require ('webpack');
-const base = './src/microservices/';
-
 
 module.exports = {
-	entry:
-		require ('fs')
-			.readdirSync (base)
-			.map ((i) =>
-				base + i + '/handler.js'
-			),
-	
+	entry: './src/microservices/functions.js',
+
 	target: 'node',
 
 	devtool: 'source-map',
 
 	plugins: [
 		new Webpack.optimize.DedupePlugin,
-		new Webpack.optimize.OccurenceOrderPlugin,
-		new Webpack.optimize.UglifyJsPlugin ({
-			minimize: true
-		})
+		new Webpack.optimize.OccurenceOrderPlugin
+		// new Webpack.optimize.UglifyJsPlugin ({
+		// 	minimize: true
+		// })
 	],
 
 	module: {
